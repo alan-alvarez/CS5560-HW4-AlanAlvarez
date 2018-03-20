@@ -12,6 +12,17 @@ import { ToastComponent } from '../shared/toast/toast.component';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
+  
+  firstname = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(30)
+  ]);
+  
+  lastname = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(30)
+  ]);
+  
   username = new FormControl('', [
     Validators.required,
     Validators.minLength(2),
@@ -27,9 +38,10 @@ export class RegisterComponent implements OnInit {
     Validators.required,
     Validators.minLength(6)
   ]);
+  /* 
   role = new FormControl('', [
     Validators.required
-  ]);
+  ]); */
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -38,10 +50,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
+	  firstname: this.firstname,
+	  lastname: this.lastname,
       username: this.username,
       email: this.email,
-      password: this.password,
-      role: this.role
+      password: this.password
     });
   }
 
@@ -56,6 +69,14 @@ export class RegisterComponent implements OnInit {
   setClassPassword() {
     return { 'has-danger': !this.password.pristine && !this.password.valid };
   }
+  
+  setClassFirstName() {
+	 return { 'has-danger': !this.firstname.pristine && !this.firstname.valid };
+  }
+
+  setClassLastName() {
+	 return { 'has-danger': !this.lastname.pristine && !this.lastname.valid };
+  } 
 
   register() {
     this.userService.register(this.registerForm.value).subscribe(
@@ -63,7 +84,8 @@ export class RegisterComponent implements OnInit {
         this.toast.setMessage('you successfully registered!', 'success');
         this.router.navigate(['/login']);
       },
-      error => this.toast.setMessage('email already exists', 'danger')
+	  //error => console.log(error)
+      error => this.toast.setMessage('duplicate username, please change username', 'danger')
     );
   }
 }

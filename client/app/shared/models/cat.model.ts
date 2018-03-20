@@ -1,6 +1,12 @@
 export class Cat {
-  _id?: string;
+  /* _id?: string;
   name?: string;
   weight?: number;
-  age?: number;
+  age?: number; */
+  
+  _id?: 			string;
+  catdomain?: 		string;
+  catusername?: 	string;
+  catpassword?: 	string;
+  user?: 			string;
 }

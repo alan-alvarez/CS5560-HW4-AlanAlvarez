@@ -2,22 +2,79 @@
 
 <app-toast [message]="toast.message"></app-toast>
 
+<!-- previous logic from testing with cat objects... 
+<div class="card mb-3">
+  <h4 class="card-header">Domain</h4>
+  <div class="card-body">
+
+    <form name="myForm">
+      <label for="repeatSelect"> Select Domain: </label>
+      <select name="repeatSelect" [(ngModel)]="chosencat.name">
+        <!--        <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option> --><!--
+        <option *ngFor="let cat of cats"
+          value="{{cat.name}}">{{cat.name}}
+        </option>
+      </select>
+    </form>
+    <hr>
+    <p>model = {{chosencat.name}}</p><br/>
+
+
+  </div>
+</div> -->
+
+
+<!-- <div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Add new domain</h4>
+  <div class="card-body">
+    <form class="form-inline" [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
+      <input class="form-control mr-2" type="text" name="domain" formControlName="domain" placeholder="Domain">
+      <button class="btn btn-primary" type="submit" [disabled]="!addCatForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div> -->
+
+
+
+<!--
+<div class="card mb-3">
+  <h4 class="card-header">Delete Domain</h4>
+  <div class="card-body">
+
+    <form name="myForm">
+      <label for="repeatSelect"> Delete Domain: </label>
+      <select name="repeatSelect" [(ngModel)]="deletecat.name">
+        <!--        <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option> --><!--
+        <option *ngFor="let cat of cats"
+          value="{{cat.name}}">{{cat.name}}
+        </option>
+      </select>
+    </form>
+    <hr>
+    <p>model = {{deletecat.name}}</p><br/>
+
+
+  </div>
+</div>
+-->
+<!--
 <div class="card mb-3" *ngIf="!isLoading">
-  <h4 class="card-header">Current cats ({{cats.length}})</h4>
+  <h4 class="card-header">Combinations</h4>
   <div class="card-body">
     <table class="table table-bordered">
       <thead class="thead-light">
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Age</th>
-          <th scope="col">Weight</th>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+          <th scope="col">Show</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
-      <tbody *ngIf="cats.length === 0">
+      <!-- <tbody *ngIf="cats.length === 0"> --><!--
+      <tbody *ngIf="chosencat.name == null">
         <tr>
           <td colspan="4">There are no cats in the DB. Add a new cat below.</td>
-        </tr>  
+        </tr>
       </tbody>
       <tbody *ngIf="!isEditing">
         <tr *ngFor="let cat of cats">
@@ -25,10 +82,10 @@
           <td>{{cat.age}}</td>
           <td>{{cat.weight}}</td>
           <td>
-            <button class="btn btn-sm btn-primary" (click)="enableEditing(cat)"><i class="fa fa-pencil"></i> Edit</button> 
+            <button class="btn btn-sm btn-primary" (click)="enableEditing(cat)"><i class="fa fa-pencil"></i> Edit</button>
             <button class="btn btn-sm btn-danger" (click)="deleteCat(cat)"><i class="fa fa-trash"></i> Delete</button>
           </td>
-        </tr>  
+        </tr>
       </tbody>
       <tbody *ngIf="isEditing">
         <tr>
@@ -47,6 +104,8 @@
   </div>
 </div>
 
+
+
 <div class="card" *ngIf="!isEditing">
   <h4 class="card-header">Add new cat</h4>
   <div class="card-body">
@@ -55,6 +114,159 @@
       <input class="form-control mr-2" type="number" name="weight" formControlName="weight" placeholder="Weight" step="any" min="0">
       <input class="form-control mr-2" type="number" name="age" formControlName="age" placeholder="Age" min="0">
       <button class="btn btn-primary" type="submit" [disabled]="!addCatForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div>
+-->
+
+
+
+
+
+
+
+
+<!--
+
+<div class="card mb-3" *ngIf="!isLoading">
+  <h4 class="card-header">Current cats ({{cats.length}})</h4>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Age</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="cats.length === 0">
+        <tr>
+          <td colspan="4">There are no cats in the DB. Add a new cat below.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let cat of cats">
+          <td>{{cat.name}}</td>
+          <td>{{cat.age}}</td>
+          <td>{{cat.weight}}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="enableEditing(cat)"><i class="fa fa-pencil"></i> Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteCat(cat)"><i class="fa fa-trash"></i> Delete</button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="4">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editCat(cat)">
+              <input class="form-control mr-2" type="text" name="name" [(ngModel)]="cat.name" placeholder="Name" required>
+              <input class="form-control mr-2" type="number" name="age" [(ngModel)]="cat.age" placeholder="Age" min="0" required>
+              <input class="form-control mr-2" type="number" name="weight" [(ngModel)]="cat.weight" placeholder="Weight" step="any" min="0" required>
+              <button class="btn btn-sm btn-primary mr-2" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+              <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+-->
+
+<div class="card mb-3" *ngIf="!isLoading">
+  <h4 class="card-header">Manage Domains</h4>
+  <div class="card-body">
+  <form class="form-inline" [formGroup]="selectDomainForm">
+	<label>Domain:</label>
+	<select name="selectdomain" [(ngModel)]="selectdomainlist" formControlName="selectdomain">
+		<option *ngFor="let domain of domains; let x = index" 
+		[attr.data-index]="x" value="{{x}}">{{domain.domainname}}</option> <!-- get object as the actual "value" https://stackoverflow.com/questions/35405618/ngfor-with-index-as-value-in-attribute/38072193 -----very helpful-->
+	</select>
+	<p *ngIf="(domains[selectdomainlist])!=null">Selected: {{domains[selectdomainlist].domainname}}</p>
+  </form>
+  
+  
+  <!-- 
+	why won't this work??? works with the cats... kinda, the object as the value definitely helps
+	
+  <form name="myForm" [formGroup]="selectDomainForm">
+      <label for="repeatSelect"> Select Domain: </label>
+      <select name="selectdomain" [(ngModel)]="selectdomainmodel">
+        <!--        <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option> --> <!--
+        <option *ngFor="let domain of domains"
+          value="{{domain.domainname}}">{{domain.domainname}}
+        </option>
+      </select>
+    </form>
+    <hr>
+    <p>model = {{chosencat.name}}</p><br/> -->
+   
+  
+  
+  
+  
+  
+  
+	<form *ngIf="!isEditing" class="form-inline" [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
+		<label>Add Domain:<input class="form-control mr-4" type="text" name="domainname" formControlName="domainname" placeholder="New Domain Name"></label>
+		<button class="btn btn-primary" type="submit" [disabled]="!addDomainForm.valid"><i class="fa fa-floppy-o"></i> Confirm</button>
+	</form>
+	
+	<form *ngIf="!isEditing" class="form-inline" [formGroup]="deleteDomainForm" (ngSubmit)="deleteDomain(domains[deletedomain.value])">
+		<label>Delete Domain:<select name="deletedomain" [(ngModel)]="deletedomainmodel" formControlName="deletedomain">
+			<option *ngFor="let domain of domains; let x = index" 
+			[attr.data-index]="x" value="{{x}}">{{domain.domainname}}</option>
+		</select></label>
+		<!-- disable button if no domain is selected -->
+		<button *ngIf="(domains[deletedomain.value]) == null" class="btn btn-danger" type="submit" disabled><i class="fa fa-floppy-o"></i> Delete</button>
+		<button *ngIf="(domains[deletedomain.value]) != null" class="btn btn-danger" type="submit"><i class="fa fa-floppy-o"></i> Delete</button>
+	</form>
+    
+  </div>
+</div>
+
+<!-- the whole combinations table, TO-DO -->
+<div class="card" *ngIf="!isEditing">
+  <h4 *ngIf="(domains[selectdomainlist])==null" class="card-header">Your Combinations (Select a Domain)</h4>
+  <h4 *ngIf="(domains[selectdomainlist])!=null" class="card-header">Your Combinations for the {{domains[selectdomainlist].domainname}} Domain</h4>
+  
+  <div class="card-body">
+	<table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+		  <!-- <th scope="col">Show</th> -->
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+	  
+      <tbody *ngIf="combs.length === 0">
+        <tr>
+          <td colspan="3">No combinations. Add one below.</td>
+        </tr>  
+      </tbody>
+	  
+      <tbody>
+	  
+	  <!-- ----------------------- -->
+	  <!-- never got working... :( -->
+        <tr *ngFor="let comb of combs">
+			<td>{{comb.catusername}}</td>
+			<td>{{comb.catpassword}}</td>
+			<td><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button></td> <!-- missing on click event? -->
+        </tr>  
+		<!-- ----------------------- -->
+		
+      </tbody>
+	</table>
+	
+	<!-- check if the drop down selectdomainlist has been hit, if so then show add -->
+    <form *ngIf="(domains[selectdomainlist])!=null" class="form" [formGroup]="addCombinationForm" (ngSubmit)="addCat()">
+	  <input class="form-control mr-2" type="text" name="catusername" formControlName="catusername" placeholder="Username for domain">
+	  <input class="form-control mr-2" type="text" name="catpassword" formControlName="catpassword" placeholder="Password for domain">
+      <button class="btn btn-primary" type="submit" ><i class="fa fa-floppy-o"></i> Add Combination</button>
     </form>
   </div>
 </div>

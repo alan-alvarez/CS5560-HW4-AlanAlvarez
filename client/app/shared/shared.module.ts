@@ -14,12 +14,10 @@ import { LoadingComponent } from './loading/loading.component';
     HttpClientModule
   ],
   exports: [
-    // Shared Modules
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    // Shared Components
     ToastComponent,
     LoadingComponent
   ],
