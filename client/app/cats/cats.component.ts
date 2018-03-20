@@ -53,10 +53,11 @@ export class CatsComponent implements OnInit {
 	  catusername = new FormControl('', Validators.required);
 	  catpassword = new FormControl('', Validators.required);
 	  
-  deleteCombinationForm: FormGroup;
+	  //throws weird error... maybe missing in component.html ?
+  /* deleteCombinationForm: FormGroup;
       catusername = new FormControl('', Validators.required);
 	  catpassword = new FormControl('', Validators.required);
-    });
+    }); */
   
 
    constructor(private catService: CatService, 
