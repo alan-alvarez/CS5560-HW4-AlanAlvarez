@@ -174,9 +174,12 @@
 </div>
 -->
 
+<!-- Domain card! select domain, delete domain, add domain -->
 <div class="card mb-3" *ngIf="!isLoading">
   <h4 class="card-header">Manage Domains</h4>
   <div class="card-body">
+  
+  <!-- Select domain -->
   <form class="form-inline" [formGroup]="selectDomainForm">
 	<label>Domain:</label>
 	<select name="selectdomain" [(ngModel)]="selectdomainlist" formControlName="selectdomain">
@@ -188,7 +191,7 @@
   
   
   <!-- 
-	why won't this work??? works with the cats... kinda, the object as the value definitely helps
+	why won't this work??? works with the cats... kinda... the object as the value definitely helps
 	
   <form name="myForm" [formGroup]="selectDomainForm">
       <label for="repeatSelect"> Select Domain: </label>
@@ -207,12 +210,13 @@
   
   
   
-  
+    <!-- add domain -->
 	<form *ngIf="!isEditing" class="form-inline" [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
 		<label>Add Domain:<input class="form-control mr-4" type="text" name="domainname" formControlName="domainname" placeholder="New Domain Name"></label>
 		<button class="btn btn-primary" type="submit" [disabled]="!addDomainForm.valid"><i class="fa fa-floppy-o"></i> Confirm</button>
 	</form>
 	
+	<!-- delete domain -->
 	<form *ngIf="!isEditing" class="form-inline" [formGroup]="deleteDomainForm" (ngSubmit)="deleteDomain(domains[deletedomain.value])">
 		<label>Delete Domain:<select name="deletedomain" [(ngModel)]="deletedomainmodel" formControlName="deletedomain">
 			<option *ngFor="let domain of domains; let x = index" 
@@ -244,7 +248,7 @@
 	  
       <tbody *ngIf="combs.length === 0">
         <tr>
-          <td colspan="3">No combinations. Add one below.</td>
+          <td colspan="4">No combinations. Add one below.</td>
         </tr>  
       </tbody>
 	  
@@ -257,7 +261,7 @@
 			<td>{{comb.catpassword}}</td>
 			<td><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button></td> <!-- missing on click event? -->
         </tr>  
-		<!-- ----------------------- -->
+	  <!-- ----------------------- -->
 		
       </tbody>
 	</table>
@@ -266,7 +270,8 @@
     <form *ngIf="(domains[selectdomainlist])!=null" class="form" [formGroup]="addCombinationForm" (ngSubmit)="addCat()">
 	  <input class="form-control mr-2" type="text" name="catusername" formControlName="catusername" placeholder="Username for domain">
 	  <input class="form-control mr-2" type="text" name="catpassword" formControlName="catpassword" placeholder="Password for domain">
-      <button class="btn btn-primary" type="submit" ><i class="fa fa-floppy-o"></i> Add Combination</button>
+      <button class="btn btn-primary" type="submit" ><i class="fa fa-floppy-o"></i> Add Combination</button> <!-- create not working -->
     </form>
+	
   </div>
 </div>

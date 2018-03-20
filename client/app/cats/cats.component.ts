@@ -37,19 +37,26 @@ export class CatsComponent implements OnInit {
     weight = new FormControl('', Validators.required);
   */
   
-  //new form for adding a domain to the vault
+  //the forms on the component.html page 
+  selectDomainForm: FormGroup;
+	selectdomain = new FormControl('', Validators.required);
+  
   addDomainForm: FormGroup;
 	domainname = new FormControl('', Validators.required);
 	
   deleteDomainForm: FormGroup;
 	deletedomain = new FormControl('', Validators.required);
   
-  selectDomainForm: FormGroup;
-	selectdomain = new FormControl('', Validators.required);
+
   
   addCombinationForm: FormGroup;
 	  catusername = new FormControl('', Validators.required);
 	  catpassword = new FormControl('', Validators.required);
+	  
+  deleteCombinationForm: FormGroup;
+      catusername = new FormControl('', Validators.required);
+	  catpassword = new FormControl('', Validators.required);
+    });
   
 
    constructor(private catService: CatService, 

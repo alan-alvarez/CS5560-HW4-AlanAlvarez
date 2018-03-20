@@ -32,10 +32,10 @@ export default function setRoutes(app) {
   router.route('/user/:id').delete(userCtrl.delete);
   
   router.route('/domains').post(domainCtrl.getAll);
-  router.route('/domains/count').post(domainCtrl.count);
-  router.route('/domains/insert').post(domainCtrl.insert);
   router.route('/domains/get/:id').get(domainCtrl.get);
   router.route('/domains/delete/:id').delete(domainCtrl.delete);
+  router.route('/domains/insert').post(domainCtrl.insert);
+  //domains/count not needed
 
   // Apply the routes to our application with the prefix /api
   app.use('/api', router);
