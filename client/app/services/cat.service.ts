@@ -53,7 +53,7 @@ export class CatService {
   }
   
   //add single comb and domain 
-  addComb(cat: Cat): Observable<Cats> {
+  addComb(cat: Cat): Observable<Cat> {
 	  cat.user = this.auth.currentUser.username;
     return this.http.post<Cat>('/api/cat', cat);
   }
