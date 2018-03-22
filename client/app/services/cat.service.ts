@@ -44,8 +44,8 @@ export class CatService {
   */
   
   //get arrays 
-  getCombs(): Observable<Cats[]> {
-    return this.http.post<Cats[]>('/api/cats', {"user": this.auth.currentUser.username});
+  getCombs(): Observable<Cat[]> {
+    return this.http.post<Cat[]>('/api/cats', {"user": this.auth.currentUser.username});
   }
   
   getDomains(): Observable<Domain[]> {
@@ -53,20 +53,20 @@ export class CatService {
   }
   
   //add single comb and domain 
-  addComb(cat: Cats): Observable<Cats> {
+  addComb(cat: Cat): Observable<Cats> {
 	  cat.user = this.auth.currentUser.username;
-    return this.http.post<Cat>('/api/cat/insert', cat);
+    return this.http.post<Cat>('/api/cat', cat);
   }
   
   addDomain(domain: Domain): Observable<Domain> {
 	  domain.user = this.auth.currentUser.username;
-    return this.http.post<Domain>('/api/domains/insert', domain);
+    return this.http.post<Domain>('/api/domain', domain);
   }
   
   
   //get single comb and domain 
-  getComb(cat: Cats): Observable<Cats> {
-    return this.http.get<Cats>(`/api/cat/get/${cat._id}`);
+  getComb(cat: Cat): Observable<Cat> {
+    return this.http.get<Cat>(`/api/cat/get/${cat._id}`);
   }
   
   getDomain(domain: Domain): Observable<Domain> {
@@ -75,7 +75,7 @@ export class CatService {
   
   
   //delete single comb and domain 
-  deleteComb(cat: Cats): Observable<string> {
+  deleteComb(cat: Cat): Observable<string> {
     return this.http.delete(`/api/cat/delete/${cat._id}`, { responseType: 'text' });
   }
   

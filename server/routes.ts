@@ -3,7 +3,6 @@ import * as express from 'express';
 import CatCtrl from './controllers/cat';
 import UserCtrl from './controllers/user';
 import DomainCtrl from './controllers/domain';
-
 import Cat from './models/cat';
 import User from './models/user';
 
@@ -15,13 +14,14 @@ export default function setRoutes(app) {
   const userCtrl = new UserCtrl();
   const domainCtrl = new DomainCtrl();
 
-  router.route('/cats').post(catCtrl.getAll);
-  router.route('/cats/count').post(catCtrl.count);
+  router.route('/cats').post(catCtrl.getAll); //why doesn't .get work?
+  //router.route('/cats/count').post(catCtrl.count);
   router.route('/cat').post(catCtrl.insert);
   router.route('/cat/:id').get(catCtrl.get);
-  router.route('/cat/:id').put(catCtrl.update);
+  //router.route('/cat/:id').put(catCtrl.update);
   router.route('/cat/:id').delete(catCtrl.delete);
-  router.route('/cat/insert').post(catCtrl.insert);
+  router.route('/cat/delete/:id').delete(catCtrl.delete);
+  //router.route('/cat/insert').post(catCtrl.insert);
 
   router.route('/login').post(userCtrl.login);
   router.route('/users').get(userCtrl.getAll);
@@ -31,10 +31,10 @@ export default function setRoutes(app) {
   router.route('/user/:id').put(userCtrl.update);
   router.route('/user/:id').delete(userCtrl.delete);
   
-  router.route('/domains').post(domainCtrl.getAll);
+  router.route('/domains').post(domainCtrl.getAll); //get all domains for a specific user 
   router.route('/domains/get/:id').get(domainCtrl.get);
   router.route('/domains/delete/:id').delete(domainCtrl.delete);
-  router.route('/domains/insert').post(domainCtrl.insert);
+  router.route('/domain').post(domainCtrl.insert);
   //domains/count not needed
 
   // Apply the routes to our application with the prefix /api

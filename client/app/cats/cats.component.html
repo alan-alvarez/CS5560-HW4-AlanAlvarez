@@ -176,102 +176,104 @@
 
 <!-- Domain card! select domain, delete domain, add domain -->
 <div class="card mb-3" *ngIf="!isLoading">
-  <h4 class="card-header">Manage Domains</h4>
-  <div class="card-body">
-  
-  <!-- Select domain -->
-  <form class="form-inline" [formGroup]="selectDomainForm">
+	<h4 class="card-header">Manage Domains</h4>
+	<div class="card-body">
+
+	<!-- Select domain -->
+	<form class="form-inline" [formGroup]="selectDomainForm">
 	<label>Domain:</label>
-	<select name="selectdomain" [(ngModel)]="selectdomainlist" formControlName="selectdomain">
+	<select name="selectdomain" [(ngModel)]="domainlist" formControlName="selectdomain">
 		<option *ngFor="let domain of domains; let x = index" 
 		[attr.data-index]="x" value="{{x}}">{{domain.domainname}}</option> <!-- get object as the actual "value" https://stackoverflow.com/questions/35405618/ngfor-with-index-as-value-in-attribute/38072193 -----very helpful-->
 	</select>
-	<p *ngIf="(domains[selectdomainlist])!=null">Selected: {{domains[selectdomainlist].domainname}}</p>
-  </form>
-  
-  
-  <!-- 
+	<!-- <p *ngIf="(domains[domainlist])!=null">Selected: {{domains[domainlist].domainname}}</p> -->
+	</form>
+
+	<!-- 
 	why won't this work??? works with the cats... kinda... the object as the value definitely helps
-	
-  <form name="myForm" [formGroup]="selectDomainForm">
-      <label for="repeatSelect"> Select Domain: </label>
-      <select name="selectdomain" [(ngModel)]="selectdomainmodel">
-        <!--        <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option> --> <!--
-        <option *ngFor="let domain of domains"
-          value="{{domain.domainname}}">{{domain.domainname}}
-        </option>
-      </select>
-    </form>
-    <hr>
-    <p>model = {{chosencat.name}}</p><br/> -->
-   
-  
-  
-  
-  
-  
-    <!-- add domain -->
+
+	<form name="myForm" [formGroup]="selectDomainForm">
+		<label for="repeatSelect"> Select Domain: </label>
+		<select name="selectdomain" [(ngModel)]="selectdomainmodel">
+		<!--        <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option> --> <!--
+		<option *ngFor="let domain of domains"
+		  value="{{domain.domainname}}">{{domain.domainname}}
+		</option>
+		</select>
+	</form>
+	<hr>
+	<p>model = {{chosencat.name}}</p><br/> -->
+
+	<!-- add domain -->
 	<form *ngIf="!isEditing" class="form-inline" [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
-		<label>Add Domain:<input class="form-control mr-4" type="text" name="domainname" formControlName="domainname" placeholder="New Domain Name"></label>
+		<label>Add Domain:</label>
+			<input class="form-control mr-4" type="text" name="domainname" formControlName="domainname" placeholder="New Domain Name">
 		<button class="btn btn-primary" type="submit" [disabled]="!addDomainForm.valid"><i class="fa fa-floppy-o"></i> Confirm</button>
 	</form>
-	
+
 	<!-- delete domain -->
 	<form *ngIf="!isEditing" class="form-inline" [formGroup]="deleteDomainForm" (ngSubmit)="deleteDomain(domains[deletedomain.value])">
-		<label>Delete Domain:<select name="deletedomain" [(ngModel)]="deletedomainmodel" formControlName="deletedomain">
+		<label>Delete Domain:</label>
+		<select name="deletedomain" [(ngModel)]="deletedomainmodel" formControlName="deletedomain">
 			<option *ngFor="let domain of domains; let x = index" 
 			[attr.data-index]="x" value="{{x}}">{{domain.domainname}}</option>
-		</select></label>
+		</select>
 		<!-- disable button if no domain is selected -->
-		<button *ngIf="(domains[deletedomain.value]) == null" class="btn btn-danger" type="submit" disabled><i class="fa fa-floppy-o"></i> Delete</button>
-		<button *ngIf="(domains[deletedomain.value]) != null" class="btn btn-danger" type="submit"><i class="fa fa-floppy-o"></i> Delete</button>
+		<button *ngIf="(domains[deletedomain.value]) != null" type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> Delete</button>
+		<button *ngIf="(domains[deletedomain.value]) == null" type="submit" class="btn btn-danger" disabled><i class="fa fa-floppy-o"></i> Delete</button>
 	</form>
-    
-  </div>
+
+	</div>
 </div>
 
 <!-- the whole combinations table, TO-DO -->
 <div class="card" *ngIf="!isEditing">
-  <h4 *ngIf="(domains[selectdomainlist])==null" class="card-header">Your Combinations (Select a Domain)</h4>
-  <h4 *ngIf="(domains[selectdomainlist])!=null" class="card-header">Your Combinations for the {{domains[selectdomainlist].domainname}} Domain</h4>
-  
-  <div class="card-body">
+	<h4 *ngIf="(domains[domainlist])==null" class="card-header">Your Combinations (Select a Domain)</h4>
+	<h4 *ngIf="(domains[domainlist])!=null" class="card-header">Your Combinations for the {{domains[domainlist].domainname}} Domain</h4>
+
+	<div class="card-body">
 	<table class="table table-bordered">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">Username</th>
-          <th scope="col">Password</th>
-		  <!-- <th scope="col">Show</th> -->
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-	  
-      <tbody *ngIf="combs.length === 0">
-        <tr>
-          <td colspan="4">No combinations. Add one below.</td>
-        </tr>  
-      </tbody>
-	  
-      <tbody>
-	  
-	  <!-- ----------------------- -->
-	  <!-- never got working... :( -->
-        <tr *ngFor="let comb of combs">
-			<td>{{comb.catusername}}</td>
-			<td>{{comb.catpassword}}</td>
-			<td><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button></td> <!-- missing on click event? -->
-        </tr>  
-	  <!-- ----------------------- -->
-		
-      </tbody>
+	
+		<thead class="thead-light">
+		<tr>
+			<th scope="col">Username</th>
+			<th scope="col">Password</th>
+			<th scope="col">Show</th>
+			<th scope="col">Delete</th>
+		</tr>
+		</thead>
+
+		<tbody *ngIf="(domains[domainlist])==null || combs.length === 0">
+		<tr>
+			<td colspan="4">No combinations. Select a domain and add one below.</td>
+		</tr>  
+		</tbody>
+
+		<tbody>
+		<tr *ngFor="let comb of combs">
+			<ng-container *ngIf="(domains[domainlist])!=null && (domains[domainlist].domainname) == comb.catdomain">
+				<ng-container *ngIf="(comb.show)==null || !comb.show">
+					<td>**********</td>
+					<td>**********</td>
+				</ng-container>	
+				<ng-container *ngIf="(comb.show)!=null && comb.show">
+					<td>{{comb.catusername}}</td>
+					<td>{{comb.catpassword}}</td>
+				</ng-container>
+			<td ><button class="btn btn-primary" (click)="showCat(comb)"><i class="fa fa-eye"></i> Show</button></td> <!-- missing on click event? -->
+			<td ><button class="btn btn-sm btn-danger" (click)="deleteCat(comb)"><i class="fa fa-trash"></i> Delete</button>
+			</ng-container>
+		</tr>  
+
+		</tbody>
 	</table>
-	
-	<!-- check if the drop down selectdomainlist has been hit, if so then show add -->
-    <form *ngIf="(domains[selectdomainlist])!=null" class="form" [formGroup]="addCombinationForm" (ngSubmit)="addCat()">
-	  <input class="form-control mr-2" type="text" name="catusername" formControlName="catusername" placeholder="Username for domain">
-	  <input class="form-control mr-2" type="text" name="catpassword" formControlName="catpassword" placeholder="Password for domain">
-      <button class="btn btn-primary" type="submit" ><i class="fa fa-floppy-o"></i> Add Combination</button> <!-- create not working -->
-    </form>
-	
-  </div>
+
+	<!-- check if the drop down domainlist has been hit, if so then show add -->
+	<form *ngIf="(domains[domainlist])!=null" [formGroup]="addCombinationForm" (ngSubmit)="addCat()" class="form">
+		<input class="form-control mr-2" type="text" name="catusername" formControlName="catusername" placeholder="Username for domain">
+		<input class="form-control mr-2" type="text" name="catpassword" formControlName="catpassword" placeholder="Password for domain">
+		<button class="btn btn-primary" type="submit" ><i class="fa fa-floppy-o"></i> Add Combination</button>
+	</form>
+
+	</div>
 </div>

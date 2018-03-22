@@ -36,9 +36,7 @@ export default class CatCtrl extends BaseCtrl {
       if (err && err.code === 11000) {
         res.sendStatus(400);
       }
-      if (err) {
-        return console.error(err);
-      }
+      if (err) { return console.error(err); }
       res.status(200).json(item);
     });
   }

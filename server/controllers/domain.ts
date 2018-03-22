@@ -8,6 +8,7 @@ export default class DomainCtrl extends BaseCtrl {
   model = Domain;
   combModel = Cat; //needed for deletion command
   
+  //get all domains to a specifc signed on user 
   getAll = (req, res) => {
     this.model.find({"user": req.body.user}, (err, docs) => {
       if (err) { return console.error(err); }
@@ -15,6 +16,7 @@ export default class DomainCtrl extends BaseCtrl {
     });
   }
   
+  //get a specific domain based on passed id 
   get = (req, res) => {
     this.model.findOne({ _id: req.params.id }, (err, item) => {
       if (err) { return console.error(err); }
@@ -24,14 +26,7 @@ export default class DomainCtrl extends BaseCtrl {
 
   insert = (req, res) => {
 	this.model.find({"user": req.body.user, "domainname": req.body.domainname}, (err, docs) => { 
-      if (err) { 
-		return console.error(err);
-	  }
-	  if(docs.length > 0){
-		  res.sendStatus(400); 
-		  return console.error(new Error("Existing domain.."));
-	  }
-	  
+      if (err) { return console.error(err); }	  
       else{
 		  const obj = new this.model(req.body);
 		  obj.save((err, item) => {
@@ -39,9 +34,7 @@ export default class DomainCtrl extends BaseCtrl {
 		  if (err && err.code === 11000) {
 			res.sendStatus(400);
 		  }
-		  if (err) {
-			return console.error(err);
-		  }
+		  if (err) { return console.error(err); }
 		  res.status(200).json(item);
 		});
 	  }

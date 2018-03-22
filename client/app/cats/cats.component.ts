@@ -5,9 +5,8 @@ import { CatService } from '../services/cat.service';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { Cat } from '../shared/models/cat.model';
 
-
 //New stuff for the vault
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/auth.service'; //for username
 import { Domain } from '../shared/models/domain.model';
 
 
@@ -48,12 +47,11 @@ export class CatsComponent implements OnInit {
 	deletedomain = new FormControl('', Validators.required);
   
 
-  
   addCombinationForm: FormGroup;
 	  catusername = new FormControl('', Validators.required);
 	  catpassword = new FormControl('', Validators.required);
 	  
-	  //throws weird error... maybe missing in component.html ?
+	  //not needed!
   /* deleteCombinationForm: FormGroup;
       catusername = new FormControl('', Validators.required);
 	  catpassword = new FormControl('', Validators.required);
@@ -62,11 +60,7 @@ export class CatsComponent implements OnInit {
 
    constructor(private catService: CatService, 
               private formBuilder: FormBuilder,
-              public toast: ToastComponent) { }
-
-
-
-
+              public toast: ToastComponent) { } 
 
 
 
@@ -101,10 +95,10 @@ export class CatsComponent implements OnInit {
       catusername: this.catusername,
       catpassword: this.catpassword
     });
-	this.deleteCombinationForm = this.formBuilder.group({
+	/* this.deleteCombinationForm = this.formBuilder.group({
       catusername: this.catusername,
       catpassword: this.catpassword
-    });
+    }); */
 	
 	
   }
@@ -121,7 +115,6 @@ export class CatsComponent implements OnInit {
   addCat() {
 	//tie the domain to the combination via drop down selection 
 	this.addCombinationForm.value.catdomain = this.domains[this.selectdomain.value].domainname;
-
 	this.catService.addComb(this.addCombinationForm.value).subscribe(
       res => {
         this.combs.push(res);
@@ -129,6 +122,8 @@ export class CatsComponent implements OnInit {
         this.toast.setMessage('item added successfully.', 'success');
       },
       error => console.log(error)
+	  
+	  
     );
   }
 	
@@ -136,9 +131,9 @@ export class CatsComponent implements OnInit {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
       this.catService.deleteComb(cat).subscribe(
         () => {
-          const pos = this.cats.map(elem => elem._id).indexOf(cat._id);
-          this.cats.splice(pos, 1);
-          this.toast.setMessage('item deleted successfully.', 'success');
+          const pos = this.combs.map(elem => elem._id).indexOf(cat._id);
+          this.combs.splice(pos, 1);
+          this.toast.setMessage('combination deleted successfully.', 'success');
         },
         error => console.log(error)
       ); 
@@ -165,11 +160,12 @@ export class CatsComponent implements OnInit {
     );
   }
   
+  
+		 //delete just like in deleteCat()
   deleteDomain(domain: Domain) {
     if (window.confirm('Are you sure you want to permanently delete this domain?')) {
       this.catService.deleteDomain(domain).subscribe(
         () => {
-		 //delete just like in deleteCat()
           const pos = this.domains.map(elem => elem._id).indexOf(domain._id);
           this.domains.splice(pos, 1);
           this.toast.setMessage('domain deleted successfully.', 'success');
@@ -182,13 +178,13 @@ export class CatsComponent implements OnInit {
   //what is this for??????
   enableEditing(cat: Cat) {
     this.isEditing = true;
-    this.cat = cat;
+    this.comb = cat;
   }
 
   //??
   cancelEditing() {
     this.isEditing = false;
-    this.cat = new Cat();
+    this.comb = new Cat();
     this.toast.setMessage('item editing cancelled.', 'warning');
     // reload the cats to reset the editing
     this.getCats();
@@ -208,7 +204,22 @@ export class CatsComponent implements OnInit {
     );
   } */
 
-  
+	  //https://www.sencha.com/forum/showthread.php?97512-How-to-add-an-attribute-to-an-object-dynamically
+	  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
+  //only way to show/hide one cat at a time would be to tie a boolean to each cat... 
+  showCat(cat: Cat) {
+	  //this is how to get position in array...
+	  //const pos = this.domains.map(elem => elem._id).indexOf(domain._id);
+	  const pos = this.combs.map(elem => elem._id).indexOf(cat._id);
+	  //check if already exists
+	  if(!this.combs[pos].hasOwnProperty('show'))
+			//this.combs[pos].show = true;    			why doesn't this work?
+			this.combs[pos]['show'] = true;
+	  
+	  else 
+			//this.combs[pos].show = !cat[pos].show    	why doesn't this work??
+			this.combs[pos]['show'] = !this.combs[pos]['show'];
+  }
   
 
 }
