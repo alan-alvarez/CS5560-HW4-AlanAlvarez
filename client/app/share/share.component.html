@@ -1,0 +1,78 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+
+
+<!-- Display shares table! With ability to DELETE and EDIT-->
+<div class="card mb-3" *ngIf="!isLoading">
+	<h4 class="card-header">Shares Portfolio Manager</h4>
+	<div class="card-body">
+		<svg width="960" height="500"></svg>
+		<table class="table table-bordered">
+			<thead class="thead-light">
+				<tr>
+					<th scope="col">Ticker</th>
+					<th scope="col">Number of Shares</th>
+					<th scope="col">Buy Price ($ USD)</th>
+					<th scope="col">Total Cost ($ USD)</th>
+					<th scope="col">Current Price ($ USD)</th> 
+					<th scope="col">Current Total Value ($ USD)</th> 
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody *ngIf="shares.length === 0">
+				<tr>
+					<td colspan="4">There are no shares in the DB. Add a new share below.</td>
+				</tr>  
+			</tbody>
+			<tbody *ngIf="!isEditing">
+				<tr *ngFor="let share of shares">
+					<td>{{share.shareticker}}</td>
+					<td>{{share.sharenumbers}}</td>
+					<td>${{share.sharebuyprice}}</td>
+					<td>${{share.sharebuyprice * share.sharenumbers}}</td>
+					<td *ngIf="share.closevalue > 0">
+						${{share.closevalue}}</td>                   
+						<td *ngIf="share.closevalue == null">Loading...</td> 
+						<td *ngIf="share.closevalue <= 0">N/A</td>
+					<td *ngIf="share.closevalue > 0">
+						${{share.sharenumbers*share.closevalue}}</td>
+						<td *ngIf="share.closevalue == null">Loading...</td>
+						<td *ngIf="share.closevalue <= 0">N/A</td>
+					<td>
+					<button class="btn btn-sm btn-primary" (click)="enableEditing(share)"><i class="fa fa-pencil"></i> Edit</button> 
+					<button class="btn btn-sm btn-danger" (click)="deleteShare(share)"><i class="fa fa-trash"></i> Delete</button>
+					</td>
+				</tr>  
+			</tbody>
+			<tbody *ngIf="isEditing">
+				<tr>
+					<td colspan="4">
+						<form class="form-inline" #form="ngForm" (ngSubmit)="editShare(share)">
+							<input class="form-control mr-2" type="text" name="shareticker" [(ngModel)]="share.shareticker" placeholder="Ticker" required>
+							<input class="form-control mr-2" type="number" name="sharenumbers" [(ngModel)]="share.sharenumbers" placeholder="Number of Shares" min="0" required>
+							<input class="form-control mr-2" type="number" name="sharebuyprice" [(ngModel)]="share.sharebuyprice" placeholder="Buy Price" step="any" min="0" required>
+							<button class="btn btn-sm btn-primary mr-2" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+							<button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+<div class="card" *ngIf="!isEditing">
+	<h4 class="card-header">Add New Share</h4>
+	<div class="card-body">
+		<form class="form-inline" [formGroup]="addShareForm" (ngSubmit)="addShare()">
+			<input class="form-control mr-2" type="text" name="shareticker" formControlName="shareticker" placeholder="Ticker">
+			<input class="form-control mr-2" type="number" name="sharenumbers" formControlName="sharenumbers" placeholder="Number of Shares" step="any" min="0">
+			<input class="form-control mr-2" type="number" name="sharebuyprice" formControlName="sharebuyprice" placeholder="Buy Price" min="0">
+			<button class="btn btn-primary" type="submit" [disabled]="!addShareForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+		</form>
+	</div>
+</div>
+

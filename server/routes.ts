@@ -3,6 +3,7 @@ import * as express from 'express';
 import CatCtrl from './controllers/cat';
 import UserCtrl from './controllers/user';
 import DomainCtrl from './controllers/domain';
+import ShareCtrl from './controllers/share';
 import Cat from './models/cat';
 import User from './models/user';
 
@@ -13,6 +14,7 @@ export default function setRoutes(app) {
   const catCtrl = new CatCtrl();
   const userCtrl = new UserCtrl();
   const domainCtrl = new DomainCtrl();
+  const shareCtrl = new ShareCtrl();
 
   router.route('/cats').post(catCtrl.getAll); //why doesn't .get work?
   //router.route('/cats/count').post(catCtrl.count);
@@ -36,6 +38,12 @@ export default function setRoutes(app) {
   router.route('/domains/delete/:id').delete(domainCtrl.delete);
   router.route('/domain').post(domainCtrl.insert);
   //domains/count not needed
+  
+  router.route('/shares').post(shareCtrl.getAllShares);
+  router.route('/share').post(shareCtrl.insert);
+  router.route('/share/:id').put(shareCtrl.update);
+  router.route('/share/:id').delete(shareCtrl.delete);
+  router.route('/share/value/:id').get(shareCtrl.getValue);
 
   // Apply the routes to our application with the prefix /api
   app.use('/api', router);
